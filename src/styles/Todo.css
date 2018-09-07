@@ -3,6 +3,7 @@
     padding:10px 20px;
     color: #fff;
     position: relative;
+    border-bottom: 1px solid #fff;
 }
 .Todo:nth-child(odd){
     background: #ffc8db;
@@ -13,6 +14,7 @@
 .Todo p{
     padding-left: 28px;
 }
+
 .Todo .TodoOperate{
     position: absolute;
     top:14px;
@@ -20,4 +22,8 @@
     height: 16px;
     width:16px;
     background: #fff;
+}
+
+.Todo.completed{
+    background: #d7d7f1;
 }

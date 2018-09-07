@@ -8,12 +8,12 @@ import '../styles/Todo.css';
 
 class Todo extends Component {
   render() {
-    return (
-      <div className="Todo">
-        <div className="TodoOperate"></div> 
-        <p>我只是一个小demo{this.props.id}</p>
-      </div>
-    );
+      return (
+        <div className={this.props.status===0?"Todo completed":"Todo"}>
+          <div className="TodoOperate"></div> 
+          <p>{this.props.content}</p>
+        </div>
+      );
   }
 }
 
