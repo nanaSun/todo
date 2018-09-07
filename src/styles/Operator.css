@@ -1,0 +1,20 @@
+.OperatorBar{
+    height: 48px;
+    line-height: 48px;
+    overflow: hidden;
+    background: #f17474;
+    color: #fff;
+    padding:0 20px ;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.OperatorBar button{
+    height: 32px;
+    padding:0 10px;
+    background: #ff3d02;
+    border: none;
+    border-radius: 4px;
+    color:#fff;
+}

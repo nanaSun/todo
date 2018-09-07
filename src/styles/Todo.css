@@ -1,0 +1,23 @@
+.Todo{
+    line-height: 1.5;
+    padding:10px 20px;
+    color: #fff;
+    position: relative;
+}
+.Todo:nth-child(odd){
+    background: #ffc8db;
+}
+.Todo:nth-child(even){
+    background: #ffabab;
+}
+.Todo p{
+    padding-left: 28px;
+}
+.Todo .TodoOperate{
+    position: absolute;
+    top:14px;
+    left:20px;
+    height: 16px;
+    width:16px;
+    background: #fff;
+}

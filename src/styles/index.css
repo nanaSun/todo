@@ -1,0 +1,12 @@
+*{
+  margin: 0px;
+  padding: 0px;
+}
+html{
+  height:100%;
+}
+body{
+  font: 16px/1.5 "Microsoft YaHei";
+  height:100%;
+  background: #FBE9E7;
+}

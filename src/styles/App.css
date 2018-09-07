@@ -1,0 +1,10 @@
+.App{
+  
+}
+.AppTitle{
+  text-align: center;
+  line-height: 2;
+  font-size: 1.5em;
+  color: #fd8200;
+  font-weight: bolder;
+}
