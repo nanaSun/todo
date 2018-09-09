@@ -7,10 +7,28 @@ import '../styles/Todo.css';
  */
 
 class Todo extends Component {
+  state={}
+  constructor(props){
+    super(props)
+    this.state.status=this.props.status
+  }
+  toggleState(){
+    console.log(this.state)
+    this.setState({
+      status:this.state.status===0?1:0
+    })
+  }
+  componentWillReceiveProps(){
+    console.log(this.props)
+  }
   render() {
       return (
         <div className={this.props.status===0?"Todo completed":"Todo"}>
-          <div className="TodoOperate"></div> 
+          <div className="TodoOperate" onClick={()=>this.props.toggleState({
+            id:this.props.id,
+            content:this.props.content,
+            status:parseInt(this.props.status)===0?1:0
+          })}></div> 
           <p>{this.props.content}</p>
         </div>
       );

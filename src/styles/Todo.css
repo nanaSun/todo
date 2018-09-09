@@ -27,3 +27,7 @@
 .Todo.completed{
     background: #d7d7f1;
 }
+
+.Todo.completed .TodoOperate{
+    background: greenyellow; 
+}
