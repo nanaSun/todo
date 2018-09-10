@@ -1,4 +1,5 @@
 import React  from 'react';
+import {Consumer} from "./context"
 import '../styles/Operator.css';
 
 /**
@@ -7,10 +8,14 @@ import '../styles/Operator.css';
 
 function Operator(props){
   return (
-    <div className="OperatorBar">
-      <button onClick={props.toggleComplete}>{props.showComplete?"Show All":"Hide Complete"}</button>
-      <button>Add Todo</button>
-    </div>
+    <Consumer>
+    {value=>(
+      <div className="OperatorBar">
+        <button onClick={value.toggleComplete}>{value.showComplete?"Show All":"Hide Complete"}</button>
+        <button>Add Todo</button>
+      </div>
+      )}
+    </Consumer>
   );
 }
 

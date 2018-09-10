@@ -2,6 +2,7 @@ import React, { Component,Fragment } from 'react';
 import Operator from './Operator';
 import '../styles/TodoList.css';
 import Todo from "./Todo"
+import {Provider} from "./context"
 /**
  *  需要传入todo数组
  *  需包含Todo组件
@@ -42,14 +43,17 @@ class TodoList extends Component {
       list=list.filter((i)=>i.status===0)
     }
     return (
-      <Fragment>
+      <Provider value={{ 
+        toggleComplete:this.toggleComplete.bind(this),
+        toggleState:this.toggleState.bind(this)
+      }}>
         <div className="TodoList" style={{height:`${this.listHeight}px`}}>
           {list.map((v)=>
-              <Todo key={"todo"+v.id} {...v} toggleState={(todo)=>this.toggleState(todo)}></Todo>
+              <Todo key={"todo"+v.id} {...v}></Todo>
           )}
         </div>
-        <Operator showComplete={this.state.showComplete} toggleComplete={()=>this.toggleComplete()}></Operator>
-      </Fragment>
+        <Operator showComplete={this.state.showComplete}></Operator>
+      </Provider>
     );
   }
 }
