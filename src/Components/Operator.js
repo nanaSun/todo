@@ -9,7 +9,7 @@ class Operator extends Component {
   render() {
     return (
       <div className="OperatorBar">
-        <button>Hide Complete</button>
+        <button onClick={this.props.toggleComplete}>{this.props.showComplete?"Show All":"Hide Complete"}</button>
         <button>Add Todo</button>
       </div>
     );

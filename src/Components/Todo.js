@@ -23,11 +23,11 @@ class Todo extends Component {
   }
   render() {
       return (
-        <div className={this.props.status===0?"Todo completed":"Todo"}>
+        <div className={this.props.status===1?"Todo completed":"Todo"}>
           <div className="TodoOperate" onClick={()=>this.props.toggleState({
             id:this.props.id,
             content:this.props.content,
-            status:parseInt(this.props.status)===0?1:0
+            status:this.props.status===0?1:0
           })}></div> 
           <p>{this.props.content}</p>
         </div>
