@@ -2,7 +2,11 @@ import React, { Component,Fragment } from 'react';
 import Operator from './Operator';
 import '../styles/TodoList.css';
 import Todo from "./Todo"
-import {Provider} from "./context"
+//import {Provider} from "./context"
+
+import {connect} from 'react-redux'
+import {deleteTodo} from '../actions/Todo'
+
 /**
  *  需要传入todo数组
  *  需包含Todo组件
@@ -18,7 +22,7 @@ class TodoList extends Component {
   listHeight=document.body.clientHeight-96
   state={
     list:todoDemoList,
-    showComplete:false
+    showComplete:true
   }
   toggleState(todo){
     this.setState({
