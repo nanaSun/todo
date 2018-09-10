@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/App.css';
 import TodoList from './TodoList'
-import Operator from './Operator';
 
 class App extends Component {
   render() {
@@ -9,7 +8,6 @@ class App extends Component {
       <div className="App">
         <div className="AppTitle">Nana's TodoList</div>
         <TodoList></TodoList>
-        <Operator></Operator>
       </div>
     );
   }

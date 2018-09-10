@@ -1,19 +1,22 @@
-import React, { Component } from 'react';
+import React  from 'react';
+import {Consumer} from "./context"
 import '../styles/Operator.css';
 
 /**
  *  操作栏
  */
 
-class Operator extends Component {
-  render() {
-    return (
+function Operator(props){
+  return (
+    <Consumer>
+    {value=>(
       <div className="OperatorBar">
-        <button>Hide Complete</button>
+        <button onClick={value.toggleComplete}>{value.showComplete?"Show All":"Hide Complete"}</button>
         <button>Add Todo</button>
       </div>
-    );
-  }
+      )}
+    </Consumer>
+  );
 }
 
 export default Operator;
