@@ -1,7 +1,15 @@
-export const DELETE_TODO = 'DELETE_TODO';
-export function deleteTodo ({ item }) {
+export const TOGGLE_TODO = 'TOGGLE_TODO';
+export const GET_TODOS = 'GET_TODOS';
+export function toggleTodo ({ items,id }) {
   return {
-    type: DELETE_TODO,
-    item:item
+    type: TOGGLE_TODO,
+    id:id,
+    items:items
+  }
+}
+export function getTodos({items}){
+  return {
+    type:GET_TODOS,
+    items:items
   }
 }

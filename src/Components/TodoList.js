@@ -2,10 +2,11 @@ import React, { Component,Fragment } from 'react';
 import Operator from './Operator';
 import '../styles/TodoList.css';
 import Todo from "./Todo"
+import {connect} from 'react-redux'
+import {getTodos,toggleTodo} from '../actions/Todo'
 //import {Provider} from "./context"
 
-import {connect} from 'react-redux'
-import {deleteTodo} from '../actions/Todo'
+
 
 /**
  *  需要传入todo数组
@@ -21,20 +22,15 @@ let todoDemoList=(new Array(20)).join("|").split("|").map((v,i)=>{
 class TodoList extends Component {
   listHeight=document.body.clientHeight-96
   state={
-    list:todoDemoList,
     showComplete:true
   }
-  toggleState(todo){
-    this.setState({
-      list:this.state.list.map((t)=>{
-        if(t.id===todo.id){
-          console.log(todo)
-          return todo
-        }else{
-          return t
-        }
-      })
-    })
+  constructor(props){
+    super(props)
+    this.props.getTodos(todoDemoList);
+  }
+  toggleState(id){
+    console.log("toggoleSTate")
+    this.props.toggleTodo(this.props.todos,id)
   }
   toggleComplete(){
     this.setState({
@@ -42,24 +38,32 @@ class TodoList extends Component {
     })
   }
   render() {
-    let list=this.state.list
+    let list=this.props.todos
     if(!this.state.showComplete){
       list=list.filter((i)=>i.status===0)
     }
     return (
-      <Provider value={{ 
-        toggleComplete:this.toggleComplete.bind(this),
-        toggleState:this.toggleState.bind(this)
-      }}>
+      <Fragment>
         <div className="TodoList" style={{height:`${this.listHeight}px`}}>
           {list.map((v)=>
-              <Todo key={"todo"+v.id} {...v}></Todo>
+              <Todo key={"todo"+v.id} {...v} toggleState={()=>this.toggleState(v.id)} ></Todo>
           )}
         </div>
-        <Operator showComplete={this.state.showComplete}></Operator>
-      </Provider>
+        <Operator toggleComplete={()=>this.toggleComplete()} showComplete={this.state.showComplete}></Operator>
+      </Fragment>
     );
   }
 }
 
-export default TodoList;
+function mapStateToProps(state,props){
+  return {
+    todos:state.todos||[]
+  }
+}
+function mapDispatchToProps(dispatch){
+  return{
+    getTodos:(items)=>{dispatch(getTodos({items:items}))},
+    toggleTodo:(items,id)=>{dispatch(toggleTodo({items:items,id:id}))}
+  }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(TodoList);
