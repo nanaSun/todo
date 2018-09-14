@@ -1,14 +1,13 @@
 const todo={
   TOGGLE_TODO:'TOGGLE_TODO',
   GET_TODOS:'GET_TODOS',
-  toggleTodo:function ({ items,id }) {
+  toggleTodo:function ({id }) {
     return {
       type: todo.TOGGLE_TODO,
-      id:id,
-      items:items
+      id:id
     }
   },
-  getTodos: function getTodos({items}){
+  getTodos: function ({items}){
     return {
       type:todo.GET_TODOS,
       items:items
