@@ -3,7 +3,7 @@ import Operator from './Operator';
 import '../styles/TodoList.css';
 import Todo from "./Todo"
 import {connect} from 'react-redux'
-import {getTodos,toggleTodo} from '../actions/Todo'
+import {getTodos,toggleTodo} from '../store/actions/Todo'
 //import {Provider} from "./context"
 
 
@@ -29,8 +29,7 @@ class TodoList extends Component {
     this.props.getTodos(todoDemoList);
   }
   toggleState(id){
-    console.log("toggoleSTate")
-    this.props.toggleTodo(this.props.todos,id)
+    this.props.toggleTodo(id)
   }
   toggleComplete(){
     this.setState({
@@ -55,15 +54,16 @@ class TodoList extends Component {
   }
 }
 
-function mapStateToProps(state,props){
+function mapStateToProps(state){
+  console.log(state)
   return {
-    todos:state.todos||[]
+    todos:state.todo.todos||[]
   }
 }
 function mapDispatchToProps(dispatch){
   return{
     getTodos:(items)=>{dispatch(getTodos({items:items}))},
-    toggleTodo:(items,id)=>{dispatch(toggleTodo({items:items,id:id}))}
+    toggleTodo:(id)=>{dispatch(toggleTodo({id:id}))}
   }
 }
 export default connect(mapStateToProps,mapDispatchToProps)(TodoList);
