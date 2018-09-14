@@ -1,4 +1,5 @@
-const {SHOW_COMPLETED}=require('../actions/filterAction')
+const {FILTERACTION}=require("../types")
+const {SHOW_COMPLETED}=FILTERACTION
 const initialState={}
 module.exports=function(state = initialState, action) {
     switch(action.type){

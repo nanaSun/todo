@@ -1,15 +1,15 @@
+const {TODO}=require("../types")
+const {TOGGLE_TODO,GET_TODOS}=TODO
 const todo={
-  TOGGLE_TODO:'TOGGLE_TODO',
-  GET_TODOS:'GET_TODOS',
   toggleTodo:function ({id }) {
     return {
-      type: todo.TOGGLE_TODO,
+      type: TOGGLE_TODO,
       id:id
     }
   },
   getTodos: function ({items}){
     return {
-      type:todo.GET_TODOS,
+      type:GET_TODOS,
       items:items
     }
   }

@@ -1,4 +1,6 @@
-const {TOGGLE_TODO,GET_TODOS}=require('../actions/Todo')
+const {TODO}=require("../types")
+const {TOGGLE_TODO,GET_TODOS}=TODO
+
 const initialState={}
 module.exports=function(state = initialState, action) {
     switch(action.type){
