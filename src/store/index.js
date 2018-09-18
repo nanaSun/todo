@@ -42,17 +42,13 @@ function dispatchAndLog(store, action) {
 // dispatchAndLog(store, getTodos({items:[]}))
 // dispatchAndLog(store, getTodos({items:["aaa"]}))
 
-function dispatchAndLog1(next,action) {
-    console.log('dispatching1', action)
-    let result = next(action)
-    //console.log(result,'next state1', store.getState())
-    return result
+function dispatchAndLog1(next) {
+    console.log('dispatching')
+    return next
 }
-function dispatchAndLog2(next,action) {
-    console.log('dispatching2', action)
-    let result = next(action)
-    //console.log(result,'next state2', store.getState())
-    return result
+function dispatchAndLog2(next) {
+    console.log('dispatching2')
+    return next
 }
 const _dispatch=store.dispatch;
 function compose(){
@@ -62,7 +58,7 @@ function compose(){
     })
     return function(action){
         middlewares.reduce((p,c)=>{
-            return p(_dispatch,c(_dispatch,action))
+            return p(_dispatch,c(_dispatch))
         })
     }
 }
