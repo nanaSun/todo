@@ -30,25 +30,31 @@ const rootReducer = combineReducers({todo: todo, filterAction: filterAction})
 let store=createStore(rootReducer)
 
 
-function dispatchAndLog(store, action) {
-    console.log('dispatching', action)
-    store.dispatch(action)
-    console.log('next state', store.getState())
-}
-// console.log("aaa")
-// store.dispatch(getTodos({items:[]}))
-// console.log("bbb")
+// function dispatchAndLog(store, action) {
+//     console.log('dispatching', action)
+//     store.dispatch(action)
+//     console.log('next state', store.getState())
+// }
+// // console.log("aaa")
+// // store.dispatch(getTodos({items:[]}))
+// // console.log("bbb")
 
-// dispatchAndLog(store, getTodos({items:[]}))
-// dispatchAndLog(store, getTodos({items:["aaa"]}))
+// // dispatchAndLog(store, getTodos({items:[]}))
+// // dispatchAndLog(store, getTodos({items:["aaa"]}))
 
 function dispatchAndLog1(next) {
-    console.log('dispatching')
-    return next
+    return function(action){
+        console.log('dispatching')
+        next(action)
+        console.log(store.getState())
+    }
 }
 function dispatchAndLog2(next) {
-    console.log('dispatching2')
-    return next
+    return function(action){
+        console.log('dispatching2')
+        next(action)
+        console.log(store.getState())
+    }
 }
 const _dispatch=store.dispatch;
 function compose(){
@@ -58,14 +64,28 @@ function compose(){
     })
     return function(action){
         middlewares.reduce((p,c)=>{
-            return p(_dispatch,c(_dispatch))
+            return p(c(_dispatch))(action)
         })
     }
 }
 store.dispatch=compose(dispatchAndLog1,dispatchAndLog2)
-store.dispatch(getTodos({items:[]}))
-// store.dispatch(getTodos({items:[]}))
 
+// const next = store.dispatch
+// const next1 = store.dispatch = function dispatchAndLog1(action) {
+//     console.log('dispatching')
+//     let result = next(action)
+//     console.log('next state', store.getState())
+//     return result
+// }
+// const next2 = store.dispatch = function dispatchAndLog2(action) {
+//     console.log('dispatching1')
+//     let result = next1(action)
+//     console.log('next state1', store.getState())
+//     return result
+// }
+
+store.dispatch(getTodos({items:[]}))
+store.dispatch(getTodos({items:["aaa"]}))
 
 // fetch('http://localhost:3000/src.json')
 // .then(res => res.json())
