@@ -6,6 +6,49 @@ const filterAction = require('./reducers/filterAction')
 const {toggleTodo,getTodos} = require('./actions/Todo')
 const {showCompleted} = require('./actions/filterAction')
 
+const dispatchAndLog1 = store=>next=>action=>{
+    let res=next(action)
+    console.log(store.getState())
+    return res
+}
+const dispatchAndLog2 = store => next => action => {
+    let res=next(action)
+    return res
+}
+function compose(middlewares){
+    return middlewares.reduce((prevFunction,currentFunction)=>{
+        return function (next) {
+            return prevFunction(currentFunction(next))
+        }
+    })
+}
+function applyMiddlewareTest(){
+    let middlewares=Array(arguments.length).join(",").split(",")
+    middlewares=middlewares.map((i,index)=>{
+        return arguments[index];
+    })
+    return (createStore)=>{
+        return function (reducer) {
+            let store = createStore(reducer)
+            let _dispatch=store.dispatch
+            let _getState=store.getState
+            let chain = middlewares.map(function (middleware) {
+                return middleware({
+                    dispatch:_dispatch,
+                    getState:_getState
+                });
+            });
+            _dispatch=compose(chain)(store.dispatch)
+            return Object.assign({},store,{
+                dispatch:_dispatch
+            })
+        }
+    }
+}
+const rootReducer = combineReducers({todo: todo, filterAction: filterAction})
+let aaaa=applyMiddlewareTest(dispatchAndLog1,dispatchAndLog2)(createStore)(rootReducer)
+aaaa.dispatch(getTodos({items:[]}))
+
 // function logger({ getState }) {
 //     return function(next){
 //         return function(action){
@@ -26,8 +69,7 @@ const {showCompleted} = require('./actions/filterAction')
 //         }
 //     }
 // }
-const rootReducer = combineReducers({todo: todo, filterAction: filterAction})
-let store=createStore(rootReducer)
+
 
 
 // function dispatchAndLog(store, action) {
@@ -42,35 +84,35 @@ let store=createStore(rootReducer)
 // // dispatchAndLog(store, getTodos({items:[]}))
 // // dispatchAndLog(store, getTodos({items:["aaa"]}))
 
-function dispatchAndLog1(next) {
-    return function(action){
-        console.log('dispatching')
-        let res=next(action)
-        console.log(res)
-        return res
-    }
-}
-function dispatchAndLog2(next) {
-    return function(action){
-        console.log('dispatching2')
-        let res=next(action)
-        console.log(store.getState())
-        return res
-    }
-}
-const _dispatch=store.dispatch;
-function compose(){
-    let middlewares=Array(arguments.length).join(",").split(",")
-    middlewares=middlewares.map((i,index)=>{
-        return arguments[index];
-    })
-    return middlewares.reduce((prevFunction,currentFunction)=>{
-        return function (next) {
-            return prevFunction(currentFunction(next))
-        }
-    })
-}
-store.dispatch=compose(dispatchAndLog1,dispatchAndLog2)(_dispatch)
+// function dispatchAndLog1(next) {
+//     return function(action){
+//         console.log('dispatching')
+//         let res=next(action)
+//         console.log(res)
+//         return res
+//     }
+// }
+// function dispatchAndLog2(next) {
+//     return function(action){
+//         console.log('dispatching2')
+//         let res=next(action)
+//         console.log(store.getState())
+//         return res
+//     }
+// }
+//const _dispatch=store.dispatch;
+// function compose(){
+//     let middlewares=Array(arguments.length).join(",").split(",")
+//     middlewares=middlewares.map((i,index)=>{
+//         return arguments[index];
+//     })
+//     return middlewares.reduce((prevFunction,currentFunction)=>{
+//         return function (next) {
+//             return prevFunction(currentFunction(next))
+//         }
+//     })
+// }
+//store.dispatch=compose(dispatchAndLog1,dispatchAndLog2)(_dispatch)
 
 // const next = store.dispatch
 // const next1 = store.dispatch = function dispatchAndLog1(action) {
@@ -86,8 +128,8 @@ store.dispatch=compose(dispatchAndLog1,dispatchAndLog2)(_dispatch)
 //     return result
 // }
 
-let a=store.dispatch(getTodos({items:[]}))
-store.dispatch(getTodos({items:["aaa"]}))
+// let a=store.dispatch(getTodos({items:[]}))
+// store.dispatch(getTodos({items:["aaa"]}))
 
 // fetch('http://localhost:3000/src.json')
 // .then(res => res.json())
@@ -118,5 +160,5 @@ store.dispatch(getTodos({items:["aaa"]}))
 // //unsubscribe();
 // store.dispatch(toggleTodo({items:todoDemoList,id:1}))
 
-module.exports=store
+// /module.exports=store
 
