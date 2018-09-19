@@ -45,15 +45,17 @@ let store=createStore(rootReducer)
 function dispatchAndLog1(next) {
     return function(action){
         console.log('dispatching')
-        next(action)
-        console.log(store.getState())
+        let res=next(action)
+        console.log(res)
+        return res
     }
 }
 function dispatchAndLog2(next) {
     return function(action){
         console.log('dispatching2')
-        next(action)
+        let res=next(action)
         console.log(store.getState())
+        return res
     }
 }
 const _dispatch=store.dispatch;
@@ -62,13 +64,13 @@ function compose(){
     middlewares=middlewares.map((i,index)=>{
         return arguments[index];
     })
-    return function(action){
-        middlewares.reduce((p,c)=>{
-            return p(c(_dispatch))(action)
-        })
-    }
+    return middlewares.reduce((prevFunction,currentFunction)=>{
+        return function (next) {
+            return prevFunction(currentFunction(next))
+        }
+    })
 }
-store.dispatch=compose(dispatchAndLog1,dispatchAndLog2)
+store.dispatch=compose(dispatchAndLog1,dispatchAndLog2)(_dispatch)
 
 // const next = store.dispatch
 // const next1 = store.dispatch = function dispatchAndLog1(action) {
@@ -84,7 +86,7 @@ store.dispatch=compose(dispatchAndLog1,dispatchAndLog2)
 //     return result
 // }
 
-store.dispatch(getTodos({items:[]}))
+let a=store.dispatch(getTodos({items:[]}))
 store.dispatch(getTodos({items:["aaa"]}))
 
 // fetch('http://localhost:3000/src.json')
