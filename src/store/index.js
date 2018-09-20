@@ -6,14 +6,24 @@ const filterAction = require('./reducers/filterAction')
 const {toggleTodo,getTodos} = require('./actions/Todo')
 const {showCompleted} = require('./actions/filterAction')
 
-const dispatchAndLog1 = store=>next=>action=>{
-    let res=next(action)
-    console.log(store.getState())
-    return res
+function logger({ getState }) {
+    return function(next){
+        return function(action){
+            console.log('will dispatch', action)
+            const returnValue = next(action)
+            console.log('state after dispatch', getState())
+            return returnValue
+        }
+    }
 }
-const dispatchAndLog2 = store => next => action => {
-    let res=next(action)
-    return res
+const ifActionIsFunction = ({dispatch,getState}) => next => action => {
+    if (typeof action === 'function') {
+        return action(dispatch, getState);
+    }else{
+        let res=next(action)
+        
+        return res
+    }
 }
 function compose(middlewares){
     return middlewares.reduce((prevFunction,currentFunction)=>{
@@ -34,7 +44,9 @@ function applyMiddlewareTest(){
             let _getState=store.getState
             let chain = middlewares.map(function (middleware) {
                 return middleware({
-                    dispatch:_dispatch,
+                    dispatch:function dispatch() {
+                        return _dispatch.apply(undefined, arguments);
+                    },
                     getState:_getState
                 });
             });
@@ -46,19 +58,19 @@ function applyMiddlewareTest(){
     }
 }
 const rootReducer = combineReducers({todo: todo, filterAction: filterAction})
-let aaaa=applyMiddlewareTest(dispatchAndLog1,dispatchAndLog2)(createStore)(rootReducer)
-aaaa.dispatch(getTodos({items:[]}))
+let store=applyMiddlewareTest(ifActionIsFunction,logger)(createStore)(rootReducer)
+store.dispatch((dispatch,getState)=>{
+    console.log(dispatch,getState)
+    return new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            console.log(`resolve`)
+            dispatch(getTodos({items:["aaaa"]}))
+            resolve("aaaa")
+        },1000);
+    })
+})
 
-// function logger({ getState }) {
-//     return function(next){
-//         return function(action){
-//             console.log('will dispatch', action)
-//             const returnValue = next(action)
-//             console.log('state after dispatch', getState())
-//             return returnValue
-//         }
-//     }
-// }
+
 // function aaa({ getState }) {
 //     return function(next){
 //         return function(action){
